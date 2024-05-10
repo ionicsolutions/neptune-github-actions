@@ -1,0 +1,56 @@
+name: Train Model
+
+on:
+  workflow_dispatch:
+    inputs:
+      criterion:
+        type: string
+        description: The function to measure the quality of a split.
+        default: gini
+      max-depth:
+        type: number
+        description: The maximum depth of the tree.
+        default: 5
+      min-samples-split:
+        type: number
+        description: The minimum number of samples required to split an internal node.
+        default: 2
+      min-samples-leaf:
+        type: number
+        description: The minimum number of samples required to be at a leaf node.
+        default: 1
+      max-leaf-nodes:
+        type: number
+        description: Grow a tree with max_leaf_nodes in best-first fashion.
+        default: 5
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    environment: Neptune
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          caching: 'pip'
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+           pip install --upgrade pip
+           pip install -r requirements.txt
+
+      - name: Train model
+        env:
+          NEPTUNE_API_TOKEN: ${{ secrets.NEPTUNE_API_TOKEN }}
+          NEPTUNE_PROJECT: ${{ vars.NEPTUNE_PROJECT }}
+        run: |
+          python train.py \
+            --max-depth ${{ github.event.inputs.max-depth }} \
+            --criterion ${{ github.event.inputs.criterion }} \
+            --min-samples-split ${{ github.event.inputs.min-samples-split }} \
+            --min-samples-leaf ${{ github.event.inputs.min-samples-leaf }} \
+            --max-leaf-nodes ${{ github.event.inputs.max-leaf-nodes }}
