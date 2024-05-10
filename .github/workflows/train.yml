@@ -4,24 +4,28 @@ on:
   workflow_dispatch:
     inputs:
       criterion:
-        type: string
         description: "The function to measure the quality of a split:"
         default: gini
+        type: choice
+        options:
+          - gini
+          - entropy
+          - log_loss
       max-depth:
-        type: number
         description: "The maximum depth of the tree:"
+        type: number
         default: 5
       min-samples-split:
-        type: number
         description: "The minimum number of samples required to split an internal node:"
+        type: number
         default: 2
       min-samples-leaf:
-        type: number
         description: "The minimum number of samples required to be at a leaf node:"
+        type: number
         default: 1
       max-leaf-nodes:
-        type: number
         description: "The maximum number of leaf nodes in the tree:"
+        type: number
         default: 5
 
 jobs:
@@ -49,8 +53,8 @@ jobs:
           NEPTUNE_PROJECT: ${{ vars.NEPTUNE_PROJECT }}
         run: |
           python train.py \
-            --max-depth ${{ github.event.inputs.max-depth }} \
             --criterion ${{ github.event.inputs.criterion }} \
+            --max-depth ${{ github.event.inputs.max-depth }} \
             --min-samples-split ${{ github.event.inputs.min-samples-split }} \
             --min-samples-leaf ${{ github.event.inputs.min-samples-leaf }} \
             --max-leaf-nodes ${{ github.event.inputs.max-leaf-nodes }}
