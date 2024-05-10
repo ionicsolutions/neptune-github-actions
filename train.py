@@ -1,8 +1,10 @@
 import argparse
 import timeit
+from typing import Literal
 
 import neptune
 import neptune.integrations.sklearn as npt_utils
+import numpy as np
 from pydantic_settings import BaseSettings
 from rich import print
 from sklearn.datasets import load_iris
@@ -19,28 +21,30 @@ class Settings(BaseSettings):
 settings = Settings()
 
 
-def load_data():
+def load_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     print("[bold]Loading dataset[/bold]")
-    data = load_iris()
-    X, y = data.data, data.target
+    iris_dataset = load_iris()
+    X, y = iris_dataset.data, iris_dataset.target
     print(f"Loaded dataset with {len(X)} samples.")
     return train_test_split(X, y, test_size=1 / 3)
 
 
 def train(
-    data: tuple,
-    criterion: str = "gini",
-    min_samples_split: int = 2,
+    data: tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+    criterion: Literal["gini", "entropy", "log_loss"] = "gini",
     max_depth: int = 5,
+    min_samples_split: int = 2,
     min_samples_leaf: int = 1,
     max_leaf_nodes: int = 5,
 ):
+    print("[bold]Training a DecisionTreeClassifier[/bold]")
     print("Unpacking training and evaluation data...")
     X_train, X_test, y_train, y_test = data
 
     print("[bold]Instantiating model...[/bold]")
     model_parameters = {
         "criterion": criterion,
+        "splitter": "best",
         "min_samples_split": min_samples_split,
         "max_depth": max_depth,
         "min_samples_leaf": min_samples_leaf,
