@@ -5,23 +5,23 @@ on:
     inputs:
       criterion:
         type: string
-        description: The function to measure the quality of a split.
+        description: "The function to measure the quality of a split:"
         default: gini
       max-depth:
         type: number
-        description: The maximum depth of the tree.
+        description: "The maximum depth of the tree:"
         default: 5
       min-samples-split:
         type: number
-        description: The minimum number of samples required to split an internal node.
+        description: "The minimum number of samples required to split an internal node:"
         default: 2
       min-samples-leaf:
         type: number
-        description: The minimum number of samples required to be at a leaf node.
+        description: "The minimum number of samples required to be at a leaf node:"
         default: 1
       max-leaf-nodes:
         type: number
-        description: Grow a tree with max_leaf_nodes in best-first fashion.
+        description: "The maximum number of leaf nodes in the tree:"
         default: 5
 
 jobs:
