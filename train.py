@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument("--min-samples-split", type=int)
     parser.add_argument("--max-depth", type=int)
     parser.add_argument("--min-samples-leaf", type=int)
-    parser.add_argument("--max-leaf_nodes", type=int)
+    parser.add_argument("--max-leaf-nodes", type=int)
 
     args = parser.parse_args()
 
