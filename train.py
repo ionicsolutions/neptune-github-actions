@@ -45,8 +45,8 @@ def train(
     model_parameters = {
         "criterion": criterion,
         "splitter": "best",
-        "min_samples_split": min_samples_split,
         "max_depth": max_depth,
+        "min_samples_split": min_samples_split,
         "min_samples_leaf": min_samples_leaf,
         "max_leaf_nodes": max_leaf_nodes,
     }
@@ -90,21 +90,19 @@ def train(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
     parser.add_argument("--criterion", type=str)
-    parser.add_argument("--min-samples-split", type=int)
     parser.add_argument("--max-depth", type=int)
+    parser.add_argument("--min-samples-split", type=int)
     parser.add_argument("--min-samples-leaf", type=int)
     parser.add_argument("--max-leaf-nodes", type=int)
-
     args = parser.parse_args()
 
     data = load_data()
     train(
         data,
-        args.criterion,
-        args.min_samples_split,
-        args.max_depth,
-        args.min_samples_leaf,
-        args.max_leaf_nodes,
+        criterion=args.criterion,
+        max_depth=args.max_depth,
+        min_samples_split=args.min_samples_split,
+        min_samples_leaf=args.min_samples_leaf,
+        max_leaf_nodes=args.max_leaf_nodes,
     )
