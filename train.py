@@ -72,14 +72,15 @@ def train(
     run["train/duration"] = fit_duration
 
     run["evaluation"] = evaluation
-    run["evaluation/cls_summary"] = npt_utils.create_classifier_summary(
-        model, X_train, X_test, y_train, y_test
-    )
     run["visuals/confusion_matrix"] = npt_utils.create_confusion_matrix_chart(
         model, X_train, X_test, y_train, y_test
     )
-
     run["estimator/pickled-model"] = npt_utils.get_pickled_model(model)
+
+    run["summary"] = npt_utils.create_classifier_summary(
+        model, X_train, X_test, y_train, y_test
+    )
+
     run.stop()
 
 
